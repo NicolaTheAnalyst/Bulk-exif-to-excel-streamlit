@@ -110,29 +110,31 @@ if __name__ == '__main__':
             im = Image.open(element)
             im_exif = getexifmethod(ext, im)
             counter += 1
-            try:
-                if im_exif is None:
-                    print("exif data not available")
-                else:
+
+            if im_exif is None:
+                st.write("exif data not available")
+            else:
+                try:
                     for key, val in im_exif.items():
                         if key in ExifTags.TAGS:
                             exif_dict[ExifTags.TAGS[key]] = val
-                            st.write(val)
-                    for key, val in exif_dict['GPSInfo'].items():
-                        if key in ExifTags.GPSTAGS:
-                            gps_info[ExifTags.GPSTAGS[key]] = val
-                    exif_dict.update(gps_info)
-                    exif_dict.pop("GPSInfo")  # delete double GPSInfo tag
+                    try: #Check if there is GPS info available
+                        for key, val in exif_dict['GPSInfo'].items():
+                            if key in ExifTags.GPSTAGS:
+                                gps_info[ExifTags.GPSTAGS[key]] = val
+                                st.write(str(val))
+                        exif_dict.update(gps_info)
+                        exif_dict.pop("GPSInfo")  # delete double GPSInfo tag
+                    except KeyError:
+                        st.write("GPS Info not found")
+                        pass # crack on
+                    df = pd.DataFrame(list(exif_dict.items()), columns=['Tags', 'Values'])
+                    df2 = df.astype(
+                        str)  # converte il df to string per evitare l'errore "Conversion failed for column Values with type object'"
+                    st.write(df2)
+                except:
+                    st.write("Ni dobro:", str(sys.exc_info()[0]), "occurred.")
 
-
-            except KeyError:
-                print("Some exif tags might have been not found.")
-
-            except:
-                print("Ni dobro:", sys.exc_info()[0], "occurred.")
-            df = pd.DataFrame(list(exif_dict.items()), columns=['Tags', 'Values'])
-            df2 = df.astype(str) # converte il df to string per evitare l'errore "Conversion failed for column Values with type object'"
-            st.write(df2)
     # https://docs.streamlit.io/library/api-reference/widgets/st.file_uploader
 
 
