@@ -95,6 +95,13 @@ def getext():
         getext()
     return ext
 
+def convert_df(df):
+    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+    return df.to_csv().encode('utf-8')
+
+
+
+
 if __name__ == '__main__':
     st.header("Bulk exif to excel web app")
     filetypes = ["jpg", "jpeg", "jpe", "jif", "jfif", "jfi", "tif", "tiff", "riff", "jpg", "jpeg", "jpe", "jif", "jfif",
@@ -104,12 +111,14 @@ if __name__ == '__main__':
     counter = 0
     gps_info = {}
     exif_dict = {}
+    dataframes = {}
     ext = ".jpg"
     if uploaded_pics is not None:  # se effettivamente c'è qualcosa
         for element in uploaded_pics:
             im = Image.open(element)
             im_exif = getexifmethod(ext, im)
             counter += 1
+            #https://stackoverflow.com/questions/69694259/create-dataframe-variables-inside-for-loop-group-dataframes
 
             if im_exif is None:
                 st.write("exif data not available")
@@ -129,13 +138,25 @@ if __name__ == '__main__':
                         st.write("GPS Info not found")
                         pass # crack on
                     df = pd.DataFrame(list(exif_dict.items()), columns=['Tags', 'Values'])
-                    df2 = df.astype(
+                    dataframes[f'df{counter}'] = df #https://stackoverflow.com/questions/69694259/create-dataframe-variables-inside-for-loop-group-dataframes
+                    csv = convert_df(dataframes[f'df{counter}'])
+                    st.download_button(
+                        label=f"Download {element.name} data as CSV",
+                        data=csv,
+                        file_name=f'df{element.name}.csv',
+                        mime='text/csv',
+                    )
+
+                    df_as_string = df.astype(
                         str)  # converte il df to string per evitare l'errore "Conversion failed for column Values with type object'"
-                    st.write(df2)
+                    st.write(df_as_string)
                 except:
                     st.write("Ni dobro:", str(sys.exc_info()[0]), "occurred.")
+                    st.write(str(sys.exc_info()[1:]))
+        st.write(dataframes)
+        st.write(dataframes[f'df{counter}'].astype(str))
 
-    # https://docs.streamlit.io/library/api-reference/widgets/st.file_uploader
+     #https://docs.streamlit.io/library/api-reference/widgets/st.file_uploader
 
 
     pass
