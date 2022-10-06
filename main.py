@@ -85,9 +85,14 @@ def getpath():
 
 def get_ext(filename):
     extensions = ["jpg", "jpeg", "jpe", "jif", "jfif", "jfi", "tif", "tiff", "riff", "jpg", "jpeg", "jpe", "jif", "jfif", "jfi", "tif", "tiff", "riff"] #compatible extensions, it's not elegant but it works
-    spllitted_filename = filename.split(".")
-    ext = "." + spllitted_filename[-1] # prende solo l'estensione dal filename e ci mette il punto davanti
-    return ext
+    splitted_filename = filename.split(".")
+    if splitted_filename[-1] in extensions: # se l'estensione è tra quelle consentite
+        ext = "." + splitted_filename[-1]  # prende solo l'estensione dal filename e ci mette il punto davanti
+        return ext
+    else:
+        st.write("L'estensione non è tra quelle consentite")
+        ext = "." + splitted_filename[-1]  # prende solo l'estensione dal filename e ci mette il punto davanti
+        return ext # return it regardless
 
 def convert_df(df): #converte il df in un csv
     return df.to_csv().encode('utf-8')
