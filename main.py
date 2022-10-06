@@ -11,7 +11,7 @@ def main():
     counter = 0
     exif_dict = {}
     gps_info = {}
-    ext = getext()
+    ext = get_ext()
     path = getpath()
     filelist = glob.glob(path + "*" + ext)
     try:
@@ -83,24 +83,14 @@ def getpath():
         path = os.path.abspath(os.path.dirname(__file__)) + "\\"  # takes the directory where the script is located
     return path
 
-def getext():
-    extensions = [".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi", ".tif", ".tiff", ".riff", "jpg", "jpeg", "jpe", "jif", "jfif", "jfi", "tif", "tiff", "riff"] #compatible extensions, it's not elegant but it works
-    ext = input("Provide the file extension of the photos ")
-    if ext in extensions:
-        if ext[0] == ".": #controlla che il primo carattere sia il punto eg. .jpeg
-            print("")
-        else:
-            ext = "." + ext
-    else:
-        getext()
+def get_ext(filename):
+    extensions = ["jpg", "jpeg", "jpe", "jif", "jfif", "jfi", "tif", "tiff", "riff", "jpg", "jpeg", "jpe", "jif", "jfif", "jfi", "tif", "tiff", "riff"] #compatible extensions, it's not elegant but it works
+    spllitted_filename = filename.split(".")
+    ext = "." + spllitted_filename[-1] # prende solo l'estensione dal filename e ci mette il punto davanti
     return ext
 
-def convert_df(df):
-    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+def convert_df(df): #converte il df in un csv
     return df.to_csv().encode('utf-8')
-
-
-
 
 if __name__ == '__main__':
     st.header("Bulk exif to excel web app")
@@ -112,9 +102,9 @@ if __name__ == '__main__':
     gps_info = {}
     exif_dict = {}
     dataframes = {}
-    ext = ".jpg"
     if uploaded_pics is not None:  # se effettivamente c'è qualcosa
         for element in uploaded_pics:
+            ext = get_ext(element.name)
             im = Image.open(element)
             im_exif = getexifmethod(ext, im)
             counter += 1
@@ -141,9 +131,9 @@ if __name__ == '__main__':
                     dataframes[f'df{counter}'] = df #https://stackoverflow.com/questions/69694259/create-dataframe-variables-inside-for-loop-group-dataframes
                     csv = convert_df(dataframes[f'df{counter}'])
                     st.download_button(
-                        label=f"Download {element.name} data as CSV",
+                        label=f"Download {element.name[:30]} data as CSV", # [:30] prende i primi trenta caratteri
                         data=csv,
-                        file_name=f'df{element.name}.csv',
+                        file_name=f'df{element.name[:30]}.csv',
                         mime='text/csv',
                     )
 
@@ -154,7 +144,7 @@ if __name__ == '__main__':
                     st.write("Ni dobro:", str(sys.exc_info()[0]), "occurred.")
                     st.write(str(sys.exc_info()[1:]))
         st.write(dataframes)
-        st.write(dataframes[f'df{counter}'].astype(str))
+        #st.write(dataframes[f'df{counter}'].astype(str))
 
      #https://docs.streamlit.io/library/api-reference/widgets/st.file_uploader
 
