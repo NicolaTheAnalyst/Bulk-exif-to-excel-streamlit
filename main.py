@@ -26,8 +26,8 @@ def get_ext(filename):
 def convert_df(df): #converte il df in un csv
     return df.to_csv().encode('utf-8')
 
-def write_report(writer, df, counter):
-    df.to_excel(writer, sheet_name=f'Sheet{counter}')
+def write_report(writer, df, filename):
+    df.to_excel(writer, sheet_name=f'Sheet{filename}') #il limite dei caratteri sugli sheet excel è 31
     return
 
 
@@ -62,8 +62,10 @@ def main(uploaded_pics):
                         st.write(f"GPS Info not found for {element.name[:40]}")
                         pass  # crack on
                     df = pd.DataFrame(list(exif_dict.items()), columns=['Tags', 'Values'])
-                    write_report(writer,df,counter)
-                    df_report = df.copy()
+
+                    #call the report function
+                    write_report(writer,df,element.name[:26])
+
 
                     dataframes[
                         f'df{counter}'] = df  # https://stackoverflow.com/questions/69694259/create-dataframe-variables-inside-for-loop-group-dataframes
@@ -78,7 +80,7 @@ def main(uploaded_pics):
                     df_as_string = df.astype(
                         str)  # converte il df to string per evitare l'errore "Conversion failed for column Values with type object'"
                     st.write(df_as_string)
-                    df_report.to_excel(writer, index=False, sheet_name=counter)
+                    #df_report.to_excel(writer, index=False, sheet_name=counter) #sta riga non serve a niente
                 except:
                     st.write("Ni dobro:", str(sys.exc_info()[0]), "occurred.")
                     st.write(str(sys.exc_info()[1:]))
