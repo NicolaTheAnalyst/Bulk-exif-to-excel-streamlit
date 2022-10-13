@@ -85,7 +85,7 @@ def main(uploaded_pics):
                     st.write("Ni dobro:", str(sys.exc_info()[0]), "occurred.")
                     st.write(str(sys.exc_info()[1:]))
         st.write(dataframes)
-        writer.save() # save and close the writer for the report file
+        writer.close() # save and close the writer for the report file; save() is deprecated
         with open("export.xlsx", "rb") as file:
             st.download_button(
                 label=f"Download excel report",  # [:30] prende i primi trenta caratteri
@@ -103,5 +103,4 @@ if __name__ == '__main__':
                                      accept_multiple_files=True)
     main(uploaded_pics)
 
-    # TODO: fix FutureWarning: save is not part of the public API, usage can give in unexpected results and will be removed in a future version
     # TODO: investigate mime type
