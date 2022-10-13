@@ -102,3 +102,6 @@ if __name__ == '__main__':
     uploaded_pics = st.sidebar.file_uploader("Carica le foto da cui esportare gli exif", type=filetypes,
                                      accept_multiple_files=True)
     main(uploaded_pics)
+
+    # TODO: fix FutureWarning: save is not part of the public API, usage can give in unexpected results and will be removed in a future version
+    # TODO: investigate mime type
