@@ -39,6 +39,7 @@ def main(uploaded_pics):
     if uploaded_pics is not None:  # se effettivamente c'è qualcosa
         writer = pd.ExcelWriter('export.xlsx', engine='xlsxwriter')
         for element in uploaded_pics:
+            st.write(f"## {element.name[:30]}")
             ext = get_ext(element.name)
             im = Image.open(element)
             im_exif = getexifmethod(ext, im)
@@ -85,7 +86,9 @@ def main(uploaded_pics):
                     st.write("Ni dobro:", str(sys.exc_info()[0]), "occurred.")
                     st.write(str(sys.exc_info()[1:]))
         st.write(dataframes)
-        writer.close() # save and close the writer for the report file; save() is deprecated
+        # https://pandas.pydata.org/docs/reference/api/pandas.ExcelWriter.html#pandas.ExcelWriter
+        writer.close() # save and close the writer for the report file; pandas.ExcelWriter.save() is deprecated
+        st.write("## Report")
         with open("export.xlsx", "rb") as file:
             st.download_button(
                 label=f"Download excel report",  # [:30] prende i primi trenta caratteri
