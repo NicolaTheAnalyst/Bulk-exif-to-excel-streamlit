@@ -85,12 +85,12 @@ def main(uploaded_pics):
                 except:
                     st.write("Ni dobro:", str(sys.exc_info()[0]), "occurred.")
                     st.write(str(sys.exc_info()[1:]))
-        st.write(dataframes)
+        #st.write(dataframes)
         # https://pandas.pydata.org/docs/reference/api/pandas.ExcelWriter.html#pandas.ExcelWriter
         writer.close() # save and close the writer for the report file; pandas.ExcelWriter.save() is deprecated
         st.write("## Report")
         with open("export.xlsx", "rb") as file:
-            st.download_button(
+            reportdownload = st.download_button(
                 label=f"Download excel report",  # [:30] prende i primi trenta caratteri
                 data=file,
                 file_name='report_excel.xlsx',
@@ -107,3 +107,4 @@ if __name__ == '__main__':
     main(uploaded_pics)
 
     # TODO: investigate mime type
+    # TODO: bug report
