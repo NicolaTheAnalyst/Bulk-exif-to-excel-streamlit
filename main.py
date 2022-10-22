@@ -37,6 +37,7 @@ def main(uploaded_pics):
     exif_dict = {}
     dataframes = {}
     if uploaded_pics is not None:  # se effettivamente c'è qualcosa
+        show_report = True
         writer = pd.ExcelWriter('export.xlsx', engine='xlsxwriter')
         for element in uploaded_pics:
             st.write(f"## {element.name[:30]}")
@@ -88,14 +89,16 @@ def main(uploaded_pics):
         #st.write(dataframes)
         # https://pandas.pydata.org/docs/reference/api/pandas.ExcelWriter.html#pandas.ExcelWriter
         writer.close() # save and close the writer for the report file; pandas.ExcelWriter.save() is deprecated
-        st.write("## Report")
-        with open("export.xlsx", "rb") as file:
-            reportdownload = st.download_button(
-                label=f"Download excel report",  # [:30] prende i primi trenta caratteri
-                data=file,
-                file_name='report_excel.xlsx',
-                mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', # https://stackoverflow.com/questions/974079/setting-mime-type-for-excel-document
-            )
+        # https://stackoverflow.com/questions/24822792/adding-spaces-in-multiple-lines-simultaneously-in-pycharm
+        if (len(uploaded_pics)) > 0:
+            st.write("## Report")
+            with open("export.xlsx", "rb") as file:
+                reportdownload = st.download_button(
+                    label=f"Download excel report",  # [:30] prende i primi trenta caratteri
+                    data=file,
+                    file_name='report_excel.xlsx',
+                    mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', # https://stackoverflow.com/questions/974079/setting-mime-type-for-excel-document
+                )
 
 
 if __name__ == '__main__':
@@ -107,4 +110,3 @@ if __name__ == '__main__':
     main(uploaded_pics)
 
     # TODO: investigate mime type
-    # TODO: bug report
