@@ -19,7 +19,7 @@ def get_ext(filename):
         ext = "." + splitted_filename[-1]  # prende solo l'estensione dal filename e ci mette il punto davanti
         return ext
     else:
-        st.write("L'estensione non è tra quelle consentite")
+        st.write("File extension not allowed")
         ext = "." + splitted_filename[-1]  # prende solo l'estensione dal filename e ci mette il punto davanti
         return ext # return it regardless
 
@@ -105,7 +105,7 @@ if __name__ == '__main__':
     st.header("Bulk exif to excel web app")
     filetypes = ["jpg", "jpeg", "jpe", "jif", "jfif", "jfi", "tif", "tiff", "riff", "jpg", "jpeg", "jpe", "jif", "jfif",
                  "jfi", "tif", "tiff", "riff"]
-    uploaded_pics = st.sidebar.file_uploader("Carica le foto da cui esportare gli exif", type=filetypes,
+    uploaded_pics = st.sidebar.file_uploader("Upload your pictures", type=filetypes,
                                      accept_multiple_files=True)
     main(uploaded_pics)
 
