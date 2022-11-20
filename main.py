@@ -1,7 +1,6 @@
 import sys
 import pandas as pd
 from PIL import Image, ExifTags
-from xlsxwriter import Workbook
 import streamlit as st
 
 
