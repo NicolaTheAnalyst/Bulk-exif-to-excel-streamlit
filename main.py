@@ -2,7 +2,7 @@ import sys
 import pandas as pd
 from PIL import Image, ExifTags
 import streamlit as st
-
+import xlsxwriter
 
 def getexifmethod(ext, im): #temporary workaround
     if ext == ".tif" or ext == ".tiff":

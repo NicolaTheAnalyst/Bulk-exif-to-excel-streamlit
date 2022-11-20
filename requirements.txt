@@ -1,3 +1,4 @@
 pandas==1.4.0
 Pillow==9.3.0
 streamlit==1.15.0
+XlsxWriter==3.0.3
