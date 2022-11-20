@@ -1,5 +1,4 @@
 import sys
-import xlsxwriter
 import pandas as pd
 from PIL import Image, ExifTags
 import streamlit as st
@@ -103,6 +102,7 @@ def main(uploaded_pics):
 
 if __name__ == '__main__':
     st.header("Bulk exif to excel web app")
+    st.write("Upload your pictures from the sidebar on the left to retrieve the exif data in a csv format.")
     filetypes = ["jpg", "jpeg", "jpe", "jif", "jfif", "jfi", "tif", "tiff", "riff", "jpg", "jpeg", "jpe", "jif", "jfif",
                  "jfi", "tif", "tiff", "riff"]
     uploaded_pics = st.sidebar.file_uploader("Upload your pictures", type=filetypes,
