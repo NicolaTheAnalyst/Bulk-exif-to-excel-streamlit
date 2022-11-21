@@ -108,5 +108,3 @@ if __name__ == '__main__':
     uploaded_pics = st.sidebar.file_uploader("Upload your pictures", type=filetypes,
                                      accept_multiple_files=True)
     main(uploaded_pics)
-
-    # TODO: investigate mime type
