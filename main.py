@@ -19,13 +19,17 @@ def get_ext(filename):
         return ext
     else:
         st.write("File extension not allowed")
-        ext = "." + splitted_filename[-1]  # prende solo l'estensione dal filename e ci mette il punto davanti
-        return ext # return it regardless
+        #ext = "." + splitted_filename[-1]  # prende solo l'estensione dal filename e ci mette il punto davanti
+        #return ext # return it regardless
 
 def convert_df(df): #converte il df in un csv
     return df.to_csv().encode('utf-8')
 
 def write_report(writer, df, filename):
+    """
+    This function writes the reports
+
+    """
     df.to_excel(writer, sheet_name=f'Sheet{filename}') #il limite dei caratteri sugli sheet excel è 31
     return
 
@@ -67,9 +71,13 @@ def main(uploaded_pics):
                     #call the report function
                     write_report(writer,df,element.name[:26])
 
+                    """
+                    below, it creates a list to store variables with different dfs
 
+                    """
                     dataframes[
                         f'df{counter}'] = df  # https://stackoverflow.com/questions/69694259/create-dataframe-variables-inside-for-loop-group-dataframes
+
                     csv = convert_df(dataframes[f'df{counter}'])
 
                     st.download_button(
