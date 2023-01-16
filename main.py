@@ -43,7 +43,7 @@ def main(uploaded_pics):
         show_report = True
         writer = pd.ExcelWriter('export.xlsx', engine='xlsxwriter')
         for element in uploaded_pics:
-            st.write(f"## {element.name[:30]}")
+            #st.write(f"## {element.name[:30]}")
             ext = get_ext(element.name)
             im = Image.open(element)
             im_exif = getexifmethod(ext, im)
