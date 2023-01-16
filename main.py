@@ -60,7 +60,7 @@ def main(uploaded_pics):
                         for key, val in exif_dict['GPSInfo'].items():
                             if key in ExifTags.GPSTAGS:
                                 gps_info[ExifTags.GPSTAGS[key]] = val
-                                st.write(str(val))
+                                #st.write(str(val) + "test")
                         exif_dict.update(gps_info)
                         exif_dict.pop("GPSInfo")  # delete double GPSInfo tag
                     except KeyError:
@@ -71,10 +71,11 @@ def main(uploaded_pics):
                     #call the report function
                     write_report(writer,df,element.name[:26])
 
-                    """
-                    below, it creates a list to store variables with different dfs
 
-                    """
+                    # below, it creates a list to store variables with different dfs
+
+
+
                     dataframes[
                         f'df{counter}'] = df  # https://stackoverflow.com/questions/69694259/create-dataframe-variables-inside-for-loop-group-dataframes
 
