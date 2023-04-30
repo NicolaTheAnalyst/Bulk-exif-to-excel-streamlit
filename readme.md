@@ -1,6 +1,6 @@
 # Streamlit Bulk exif data export to Excel
 
-The very same [bulk exif to excel script](https://github.com/flyingwonton/bulk-exif-to-excel) but with a fronend\Web app based on Streamlit.
+The very same [bulk exif to excel script](https://github.com/flyingwonton/bulk-exif-to-excel) but with a frontend\Web app based on Streamlit.
 
 ## What it does
 
